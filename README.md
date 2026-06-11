@@ -148,4 +148,6 @@ Training is non-deterministic across machines even with `random_state=42` set, b
 
 ## Authors
 
-Built as part of the Data-Driven Investment Intelligence using NIFTY-50 Market Data challenge.
+Akshat Bilandi 
+24324003 
+Built as an open project for Cultural Council IITR
