@@ -43,8 +43,8 @@ The app has four main sections:
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/<your-username>/<your-repo>.git
-cd <your-repo>
+git clone https://github.com/akshazam0161/NIFTY-50-Investment-Intelligence-Platform.git
+cd NIFTY-50-Investment-Intelligence-Platform
 ```
 
 ### 2. Create a virtual environment
