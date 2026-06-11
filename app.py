@@ -125,18 +125,36 @@ with col4:
         st.plotly_chart(feat_fig, use_container_width=True)
     else:
         st.info("Run the model on the left to see XAI feature importances here.")
-
+        
 st.divider()
 
-# SECTION 3: Dynamic Portfolio Management Optimization 
+# SECTION 3: Dynamic Portfolio Management Optimization
+
 st.markdown("### 💼 Automated Portfolio Construction Module")
 
 allocations, justification, target_df = generate_profile_portfolio(metrics_df, investor_profile)
 
+# Calculate portfolio-level metrics
+portfolio_return = (pd.Series(allocations) * target_df.set_index('Symbol')['Cum_Return']).sum()
+portfolio_vol = (pd.Series(allocations) * target_df.set_index('Symbol')['Annualized_Volatility']).sum()
+portfolio_sharpe = (pd.Series(allocations) * target_df.set_index('Symbol')['Sharpe_Ratio']).sum()
+
 col5, col6 = st.columns([1, 2])
+
 with col5:
     st.write(f"**Recommended Asset Allocations ({investor_profile}):**")
-
+    
+    # Portfolio summary metrics
+    st.markdown("#### 📊 Portfolio Summary")
+    col5a, col5b = st.columns(2)
+    with col5a:
+        st.metric("Portfolio Sharpe", f"{portfolio_sharpe:.2f}")
+        st.metric("Annual Volatility", f"{portfolio_vol:.2%}")
+    with col5b:
+        st.metric("Cumulative Return", f"{portfolio_return:.2%}")
+    
+    st.divider()
+    
     alloc_df = pd.DataFrame(list(allocations.items()), columns=['Asset Symbol', 'Weight Portfolio Allocation'])
     st.dataframe(alloc_df.style.format({'Weight Portfolio Allocation': '{:.0%}'}))
 
@@ -152,26 +170,46 @@ with col6:
     )
     st.plotly_chart(pie_fig, use_container_width=True)
 
-#  Correlation Heatmap (full width, below the two columns) 
+# Correlation Heatmap (full width, below the two columns)
+
 st.markdown("#### 🔗 Portfolio Return Correlation Matrix")
+
 st.write(
-    "Pairwise Pearson correlation of daily returns across selected portfolio stocks. "
-    "Values close to 1 indicate the stocks move together — reducing diversification benefit."
+
+"Pairwise Pearson correlation of daily returns across selected portfolio stocks. "
+
+"Values close to 1 indicate the stocks move together — reducing diversification benefit."
+
 )
+
 portfolio_tickers = list(allocations.keys())
+
 portfolio_returns = (
-    df[df['Symbol'].isin(portfolio_tickers)][['Date', 'Symbol', 'Daily_Return']]
-    .pivot_table(index='Date', columns='Symbol', values='Daily_Return')
-    .dropna()
+
+df[df['Symbol'].isin(portfolio_tickers)][['Date', 'Symbol', 'Daily_Return']]
+
+.pivot_table(index='Date', columns='Symbol', values='Daily_Return')
+
+.dropna()
+
 )
+
 corr_matrix = portfolio_returns.corr()
+
 corr_fig = px.imshow(
-    corr_matrix,
-    title=f"Correlation Matrix — {investor_profile} Portfolio",
-    color_continuous_scale='RdBu_r',
-    zmin=-1, zmax=1,
-    text_auto='.2f'
+
+corr_matrix,
+
+title=f"Correlation Matrix — {investor_profile} Portfolio",
+
+color_continuous_scale='RdBu_r',
+
+zmin=-1, zmax=1,
+
+text_auto='.2f'
+
 )
+
 st.plotly_chart(corr_fig, use_container_width=True)
 
 st.divider()
