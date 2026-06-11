@@ -148,6 +148,5 @@ Training is non-deterministic across machines even with `random_state=42` set, b
 
 ## Authors
 
-Akshat Bilandi 
-24324003 
-Built as an open project for Cultural Council IITR
+Akshat Bilandi (24324003)
+Built for Open Project Cultural Council IITR
