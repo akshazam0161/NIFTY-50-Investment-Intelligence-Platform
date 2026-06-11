@@ -103,8 +103,7 @@ streamlit==1.32.0
 pandas==2.2.0
 numpy==1.26.4
 scikit-learn==1.4.0
-xgboost==2.0.3
-matplotlib==3.8.3
+joblib==1.3.2
 plotly==5.19.0
 ```
 
